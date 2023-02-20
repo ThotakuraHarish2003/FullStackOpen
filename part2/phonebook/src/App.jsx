@@ -10,7 +10,8 @@ const App = () => {
     axios.get("http://localhost:3001/persons")
           .then(response => {
             setDisplayPersons(response.data)
-            setPersons(response.data)})
+            setPersons(response.data)}
+            )
   }
 
   useEffect(hook,[])
@@ -45,6 +46,8 @@ const App = () => {
       const person = {name:newName,number:newNumber};
       setDisplayPersons(persons.concat(person))
       setPersons(persons.concat(person))
+      axios.post("http://localhost:3001/persons",{...person,length:persons.length+1})
+            .then(console.log('success'))
     }
     else{
       window.alert(`${newName} is already added to phonebook`)
