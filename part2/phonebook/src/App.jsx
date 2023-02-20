@@ -52,16 +52,21 @@ const App = () => {
 
   const addPerson = (e) =>{
     e.preventDefault();
+    const person = {name:newName,number:newNumber,id:persons.length+1};
     const filteredPerson = persons.filter(person => person.name ==newName);
     if(filteredPerson.length==0){
-      const person = {name:newName,number:newNumber,id:persons.length+1};
       setDisplayPersons(persons.concat(person))
       setPersons(persons.concat(person))
       noteService.add(person)
       .then(response =>console.log(response))
     }
     else{
-      window.alert(`${newName} is already added to phonebook`)
+      window.confirm(`${newName} is already added to phonebook Do u want to replace the number`)
+      const filterd = persons.filter(person => person.name==newName)
+      noteService.update(filterd[0].id,person).then(
+        console.log('updated')
+      )
+
     }
 
 
