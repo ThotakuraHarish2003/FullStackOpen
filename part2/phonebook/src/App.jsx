@@ -13,8 +13,15 @@ const App = () => {
 
   const addPerson = (e) =>{
     e.preventDefault();
-    const person = {name:newName};
-    setPersons(persons.concat(person))
+    const filteredPerson = persons.filter(person => person.name ==newName);
+    if(filteredPerson.length==0){
+      const person = {name:newName};
+      setPersons(persons.concat(person))
+    }
+    else{
+      window.alert(`${newName} is already added to phonebook`)
+    }
+    
   }
   return (
     <div>
