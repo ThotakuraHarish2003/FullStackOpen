@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios'
+import noteService from './services/note'
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -7,10 +8,10 @@ import Persons from './components/Persons';
 const App = () => {
   const [persons, setPersons] = useState([])
   const hook = () =>{
-    axios.get("http://localhost:3001/persons")
+    noteService.get()
           .then(response => {
-            setDisplayPersons(response.data)
-            setPersons(response.data)}
+            setDisplayPersons(response)
+            setPersons(response)}
             )
   }
 
@@ -46,8 +47,8 @@ const App = () => {
       const person = {name:newName,number:newNumber};
       setDisplayPersons(persons.concat(person))
       setPersons(persons.concat(person))
-      axios.post("http://localhost:3001/persons",{...person,length:persons.length+1})
-            .then(console.log('success'))
+      noteService.add({...person,id:persons.length+1})
+      .then(response =>console.log(response))
     }
     else{
       window.alert(`${newName} is already added to phonebook`)
