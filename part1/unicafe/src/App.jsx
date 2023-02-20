@@ -1,9 +1,32 @@
-import React from 'react'
+import React, { useState } from "react";
 
 const App = () => {
-  return (
-    <div>App</div>
-  )
-}
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
-export default App
+  const handleGoodClick = () => {
+    setGood(good + 1);
+  };
+  const handleBadClick = () => {
+    setBad(bad + 1);
+  };
+  const handleNeutralClick = () => {
+    setNeutral(neutral + 1);
+  };
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <button onClick={handleGoodClick}>good</button>
+      <button onClick={handleNeutralClick}>neutral</button>
+      <button onClick={handleBadClick}>bad</button>
+      <h1>statistics</h1>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+    </div>
+  );
+};
+
+export default App;
