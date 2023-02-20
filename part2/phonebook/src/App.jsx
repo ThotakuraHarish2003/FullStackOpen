@@ -40,14 +40,24 @@ const App = () => {
     setDisplayPersons(filteredPerson) 
   }
 
+  const deletePerson =(id) => {
+    if(window.confirm("do u want to delete")){
+      noteService.del(id)
+        .then(console.log('deleted'))
+    setDisplayPersons(displayPersons.filter(person => person.id!=id))
+    setPersons(persons.filter(person=>person.id!=id))
+    }
+    
+  }
+
   const addPerson = (e) =>{
     e.preventDefault();
     const filteredPerson = persons.filter(person => person.name ==newName);
     if(filteredPerson.length==0){
-      const person = {name:newName,number:newNumber};
+      const person = {name:newName,number:newNumber,id:persons.length+1};
       setDisplayPersons(persons.concat(person))
       setPersons(persons.concat(person))
-      noteService.add({...person,id:persons.length+1})
+      noteService.add(person)
       .then(response =>console.log(response))
     }
     else{
@@ -63,7 +73,7 @@ const App = () => {
       <h1>add a new</h1>
       <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons displayPersons={displayPersons} />
+      <Persons displayPersons={displayPersons} handleDelete={deletePerson}/>
     </div>
   )
 }

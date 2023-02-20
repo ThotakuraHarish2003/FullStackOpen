@@ -11,4 +11,9 @@ const add = (object) =>{
     return req.then(response=>response.data);
 }
 
-export default {get,add}
+const del = (id) => {
+    const req = axios.delete(`${url}/${id}`)
+    return req.then(response=>response.data)
+}
+
+export default {get,add,del}
