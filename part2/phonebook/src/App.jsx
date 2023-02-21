@@ -1,9 +1,11 @@
 import React,{useState,useEffect} from 'react'
+import './index.css'
 import axios from 'axios'
 import noteService from './services/note'
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -21,6 +23,7 @@ const App = () => {
   const [newName,setNewName] = useState('')
   const [newNumber,setNewNumber] = useState('')
   const [filter,setFilter] = useState('')
+  const [errorMessage,setErrorMessage] = useState('')
 
   const handleNameChange =(e) =>{
     e.preventDefault()
@@ -44,6 +47,16 @@ const App = () => {
     if(window.confirm("do u want to delete")){
       noteService.del(id)
         .then(console.log('deleted'))
+        .catch((error)=>{
+          setErrorMessage({
+            success:false,
+            content:`Number with name ${newName} is already deleted in the server`
+          })
+    
+          setTimeout(()=>{
+            setErrorMessage('')
+          },5000)
+        })
     setDisplayPersons(displayPersons.filter(person => person.id!=id))
     setPersons(persons.filter(person=>person.id!=id))
     }
@@ -66,14 +79,23 @@ const App = () => {
       noteService.update(filterd[0].id,person).then(
         console.log('updated')
       )
+      noteService.get().then(response=>{
+        setDisplayPersons(response)
+        setPersons(response)
+      })}
+      setErrorMessage({
+        success:true,
+        content:`Number with name ${newName} is added to the server`
+      })
 
-    }
-
-
+      setTimeout(()=>{
+        setErrorMessage('')
+      },5000)
   }
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={errorMessage}/>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h1>add a new</h1>
       <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
