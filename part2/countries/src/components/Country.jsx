@@ -1,4 +1,6 @@
 import React from 'react'
+import Weather from './Weather'
+
 
 const Country = ({country}) => {
     if(country.length==0){
@@ -14,6 +16,7 @@ const Country = ({country}) => {
                 {Object.values(country.languages).map((lang) => <li>{lang}</li>)}
             </ul>
             <img alt={country.flags.alt} src={country.flags.png} />
+            <Weather city={country.capital[0]} />
         </div>
   )
 }
