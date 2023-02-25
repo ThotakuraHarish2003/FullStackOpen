@@ -44,8 +44,9 @@ const unknownEndpoint = (req,res) => {
 app.use(express.json())
 //app.use(requestLogger)
 app.use(morgan('tiny'))
+app.use(express.static('dist'))
 
-app.get('/',(req,res)=>{
+app.get('/api/persons',(req,res)=>{
     res.json(data)
 })
 
