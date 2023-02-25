@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev":"node index.js",
-    "build-ui":"cd frontend/ && npm run build && cp -r dist ../"
+    "build-ui":"cd frontend/ && npm run build"
   },
   "keywords": [],
   "author": "",
