@@ -1,8 +1,9 @@
 const express = require('express')
 const uuid = require('uuid')
+const morgan = require('morgan')
+
 const app = express()
 const port = process.env.PORT || 5000
-
 let data = [
     { 
       "id": "1",
@@ -26,8 +27,23 @@ let data = [
     }
 ]
 
+const requestLogger = (req,res,next) =>{
+    console.log('Method',req.method)
+    console.log('Path',req.path)
+    console.log('Body',req.body)
+    console.log('---')
+    next()
+}
+
+
+const unknownEndpoint = (req,res) => {
+    res.status(404).json({error:'unkown point'})
+}
+
 
 app.use(express.json())
+//app.use(requestLogger)
+app.use(morgan('tiny'))
 
 app.get('/',(req,res)=>{
     res.json(data)
@@ -78,6 +94,8 @@ app.post('/api/persons',(req,res)=>{
     }
     
 })
+
+app.use(unknownEndpoint)
 
 app.listen(port,()=>{
     console.log(`Server is running on ${port}`);
