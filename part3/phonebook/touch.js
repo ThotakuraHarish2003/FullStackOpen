@@ -61,13 +61,22 @@ app.delete('/api/persons/:id',(req,res)=>{
 app.post('/api/persons',(req,res)=>{
     const body = req.body
     console.log(body)
-    const newPerson ={
-        id:uuid.v4(),
-        name : body.name,
-        number:body.number
+    if(body.number&&body.name){
+        const newPerson ={
+            id:uuid.v4(),
+            name : body.name,
+            number:body.number
+        }
+        if(data.find(person=>person.name==newPerson.name)){
+            res.json({"error":"Name already present"})
+        }
+        data = data.concat(newPerson)
+        res.send('Added data')
     }
-    data = data.concat(newPerson)
-    res.send('Added data')
+    else{
+        res.json({"error":"Data not Found"})
+    }
+    
 })
 
 app.listen(port,()=>{
